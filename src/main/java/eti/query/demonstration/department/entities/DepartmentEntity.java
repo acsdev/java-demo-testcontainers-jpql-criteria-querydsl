@@ -2,7 +2,6 @@ package eti.query.demonstration.department.entities;
 
 import java.util.Objects;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,13 +11,19 @@ import javax.persistence.Table;
 @Table(name = "DEPARTMENTS", schema = "HR", catalog = "")
 public class DepartmentEntity {
 
-    private long departmentId;
-    private String departmentName;
-    private Long managerId;
-    private Long locationId;
-
     @Id
     @Column(name = "DEPARTMENT_ID")
+    private long departmentId;
+
+    @Column(name = "DEPARTMENT_NAME")
+    private String departmentName;
+
+    @Column(name = "MANAGER_ID")
+    private Long managerId;
+
+    @Column(name = "LOCATION_ID")
+    private Long locationId;
+
     public long getDepartmentId() {
         return departmentId;
     }
@@ -27,8 +32,6 @@ public class DepartmentEntity {
         this.departmentId = departmentId;
     }
 
-    @Basic
-    @Column(name = "DEPARTMENT_NAME")
     public String getDepartmentName() {
         return departmentName;
     }
@@ -37,8 +40,6 @@ public class DepartmentEntity {
         this.departmentName = departmentName;
     }
 
-    @Basic
-    @Column(name = "MANAGER_ID")
     public Long getManagerId() {
         return managerId;
     }
@@ -47,8 +48,6 @@ public class DepartmentEntity {
         this.managerId = managerId;
     }
 
-    @Basic
-    @Column(name = "LOCATION_ID")
     public Long getLocationId() {
         return locationId;
     }

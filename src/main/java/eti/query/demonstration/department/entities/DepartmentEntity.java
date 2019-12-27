@@ -1,4 +1,4 @@
-package eti.query.demonstration.departament.entities;
+package eti.query.demonstration.department.entities;
 
 import java.util.Objects;
 

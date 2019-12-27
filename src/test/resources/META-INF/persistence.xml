@@ -12,7 +12,7 @@
         <class>eti.query.demonstration.converters.LocalDateTimeAttributeConverter</class>
 
         <class>eti.query.demonstration.country.entities.CountryEntity</class>
-        <class>eti.query.demonstration.departament.entities.DepartmentEntity</class>
+        <class>eti.query.demonstration.department.entities.DepartmentEntity</class>
         <class>eti.query.demonstration.employee.entities.EmployeeEntity</class>
         <class>eti.query.demonstration.job.entities.JobEntity</class>
         <class>eti.query.demonstration.job.entities.JobHistoryEntity</class>

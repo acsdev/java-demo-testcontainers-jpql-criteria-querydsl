@@ -115,9 +115,6 @@
 
     <profiles>
         <profile>
-            <id>with-plugin-ant</id>
-        </profile>
-        <profile>
             <id>with-plugin-metamodel-dsl</id>
             <activation>
                 <activeByDefault>true</activeByDefault>

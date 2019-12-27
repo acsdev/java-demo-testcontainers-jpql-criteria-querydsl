@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "JOB_HISTORY", schema = "HR", catalog = "")
+@Table(name = "JOB_HISTORY", schema = "HR")
 public class JobHistoryEntity {
 
     @EmbeddedId

@@ -1,24 +1,30 @@
+
 package eti.query.demonstration.job.entities;
 
 import java.util.Objects;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "JOBS", schema = "HR", catalog = "")
+@Table(name = "JOBS", schema = "HR")
 public class JobEntity {
-
-    private String jobId;
-    private String jobTitle;
-    private Long minSalary;
-    private Long maxSalary;
 
     @Id
     @Column(name = "JOB_ID")
+    private String jobId;
+
+    @Column(name = "JOB_TITLE")
+    private String jobTitle;
+
+    @Column(name = "MIN_SALARY")
+    private Long minSalary;
+
+    @Column(name = "MAX_SALARY")
+    private Long maxSalary;
+
     public String getJobId() {
         return jobId;
     }
@@ -27,8 +33,6 @@ public class JobEntity {
         this.jobId = jobId;
     }
 
-    @Basic
-    @Column(name = "JOB_TITLE")
     public String getJobTitle() {
         return jobTitle;
     }
@@ -37,8 +41,6 @@ public class JobEntity {
         this.jobTitle = jobTitle;
     }
 
-    @Basic
-    @Column(name = "MIN_SALARY")
     public Long getMinSalary() {
         return minSalary;
     }
@@ -47,8 +49,6 @@ public class JobEntity {
         this.minSalary = minSalary;
     }
 
-    @Basic
-    @Column(name = "MAX_SALARY")
     public Long getMaxSalary() {
         return maxSalary;
     }

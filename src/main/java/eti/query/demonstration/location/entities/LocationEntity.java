@@ -2,25 +2,34 @@ package eti.query.demonstration.location.entities;
 
 import java.util.Objects;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "LOCATIONS", schema = "HR", catalog = "")
+@Table(name = "LOCATIONS", schema = "HR")
 public class LocationEntity {
-
-    private long locationId;
-    private String streetAddress;
-    private String postalCode;
-    private String city;
-    private String stateProvince;
-    private String countryId;
 
     @Id
     @Column(name = "LOCATION_ID")
+    private long locationId;
+
+    @Column(name = "STREET_ADDRESS")
+    private String streetAddress;
+
+    @Column(name = "POSTAL_CODE")
+    private String postalCode;
+
+    @Column(name = "CITY")
+    private String city;
+
+    @Column(name = "STATE_PROVINCE")
+    private String stateProvince;
+
+    @Column(name = "COUNTRY_ID")
+    private String countryId;
+
     public long getLocationId() {
         return locationId;
     }
@@ -29,8 +38,6 @@ public class LocationEntity {
         this.locationId = locationId;
     }
 
-    @Basic
-    @Column(name = "STREET_ADDRESS")
     public String getStreetAddress() {
         return streetAddress;
     }
@@ -39,8 +46,6 @@ public class LocationEntity {
         this.streetAddress = streetAddress;
     }
 
-    @Basic
-    @Column(name = "POSTAL_CODE")
     public String getPostalCode() {
         return postalCode;
     }
@@ -49,8 +54,6 @@ public class LocationEntity {
         this.postalCode = postalCode;
     }
 
-    @Basic
-    @Column(name = "CITY")
     public String getCity() {
         return city;
     }
@@ -59,8 +62,6 @@ public class LocationEntity {
         this.city = city;
     }
 
-    @Basic
-    @Column(name = "STATE_PROVINCE")
     public String getStateProvince() {
         return stateProvince;
     }
@@ -69,8 +70,6 @@ public class LocationEntity {
         this.stateProvince = stateProvince;
     }
 
-    @Basic
-    @Column(name = "COUNTRY_ID")
     public String getCountryId() {
         return countryId;
     }

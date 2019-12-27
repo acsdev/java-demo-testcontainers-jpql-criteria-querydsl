@@ -2,12 +2,9 @@ package eti.query.demonstration.employee.entities;
 
 import eti.query.demonstration.converters.LocalDateTimeAttributeConverter;
 
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -15,23 +12,44 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "EMPLOYEES", schema = "HR", catalog = "")
+@Table(name = "EMPLOYEES", schema = "HR")
 public class EmployeeEntity {
-
-    private long employeeId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private LocalDateTime hireDate;
-    private String jobId;
-    private Long salary;
-    private Long commissionPct;
-    private Long managerId;
-    private Long departmentId;
 
     @Id
     @Column(name = "EMPLOYEE_ID")
+    private long employeeId;
+
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+
+    @Column(name = "LAST_NAME")
+    private String lastName;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "PHONE_NUMBER")
+    private String phoneNumber;
+
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    @Column(name = "HIRE_DATE")
+    private LocalDateTime hireDate;
+
+    @Column(name = "JOB_ID")
+    private String jobId;
+
+    @Column(name = "SALARY")
+    private Long salary;
+
+    @Column(name = "COMMISSION_PCT")
+    private Long commissionPct;
+
+    @Column(name = "MANAGER_ID")
+    private Long managerId;
+
+    @Column(name = "DEPARTMENT_ID")
+    private Long departmentId;
+
     public long getEmployeeId() {
         return employeeId;
     }
@@ -40,8 +58,6 @@ public class EmployeeEntity {
         this.employeeId = employeeId;
     }
 
-    @Basic
-    @Column(name = "FIRST_NAME")
     public String getFirstName() {
         return firstName;
     }
@@ -50,8 +66,6 @@ public class EmployeeEntity {
         this.firstName = firstName;
     }
 
-    @Basic
-    @Column(name = "LAST_NAME")
     public String getLastName() {
         return lastName;
     }
@@ -60,8 +74,6 @@ public class EmployeeEntity {
         this.lastName = lastName;
     }
 
-    @Basic
-    @Column(name = "EMAIL")
     public String getEmail() {
         return email;
     }
@@ -70,8 +82,6 @@ public class EmployeeEntity {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "PHONE_NUMBER")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -80,8 +90,7 @@ public class EmployeeEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
-    @Column(name = "HIRE_DATE")
+
     public LocalDateTime getHireDate() {
         return hireDate;
     }
@@ -90,8 +99,6 @@ public class EmployeeEntity {
         this.hireDate = hireDate;
     }
 
-    @Basic
-    @Column(name = "JOB_ID")
     public String getJobId() {
         return jobId;
     }
@@ -100,8 +107,6 @@ public class EmployeeEntity {
         this.jobId = jobId;
     }
 
-    @Basic
-    @Column(name = "SALARY")
     public Long getSalary() {
         return salary;
     }
@@ -110,8 +115,6 @@ public class EmployeeEntity {
         this.salary = salary;
     }
 
-    @Basic
-    @Column(name = "COMMISSION_PCT")
     public Long getCommissionPct() {
         return commissionPct;
     }
@@ -120,8 +123,6 @@ public class EmployeeEntity {
         this.commissionPct = commissionPct;
     }
 
-    @Basic
-    @Column(name = "MANAGER_ID")
     public Long getManagerId() {
         return managerId;
     }
@@ -130,8 +131,7 @@ public class EmployeeEntity {
         this.managerId = managerId;
     }
 
-    @Basic
-    @Column(name = "DEPARTMENT_ID")
+
     public Long getDepartmentId() {
         return departmentId;
     }

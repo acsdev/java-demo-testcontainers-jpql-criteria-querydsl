@@ -32,7 +32,10 @@ public abstract class AbstractPersistenceTest {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
         this.initalizeEm();
+
         setEntityManager(getEntityManager());
+
+        CriteriaUtil.configMetaModel(getEntityManager());
 
         if (!this.tx.isActive()) {
             this.tx.begin();

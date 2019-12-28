@@ -111,6 +111,7 @@
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
         </dependency>
+
     </dependencies>
 
     <profiles>
@@ -136,14 +137,9 @@
                                     <outputDirectory>target/generated-sources/apt</outputDirectory>
                                     <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                                     <options>
-                                        <querydsl.packageSuffix>.metamodel</querydsl.packageSuffix>
+                                        <querydsl.packageSuffix>.dslmodel</querydsl.packageSuffix>
                                         <querydsl.includedPackages>
-                                            eti.query.demonstration.country.entities,
-                                            eti.query.demonstration.department.entities,
-                                            eti.query.demonstration.employee.entities,
-                                            eti.query.demonstration.job.entities,
-                                            eti.query.demonstration.location.entities,
-                                            eti.query.demonstration.region.entities
+                                            eti.query.demonstration.country.entities,eti.query.demonstration.department.entities,eti.query.demonstration.employee.entities,eti.query.demonstration.job.entities,eti.query.demonstration.location.entities,eti.query.demonstration.region.entities
                                         </querydsl.includedPackages>
                                     </options>
                                 </configuration>
@@ -176,7 +172,9 @@
                                         -Aeclipselink.canonicalmodel.subpackage=metamodel
                                     </compilerArguments>
                                     <processors>
-                                        <processor>org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor</processor>
+                                        <processor>
+                                            org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor
+                                        </processor>
                                     </processors>
                                 </configuration>
                             </execution>

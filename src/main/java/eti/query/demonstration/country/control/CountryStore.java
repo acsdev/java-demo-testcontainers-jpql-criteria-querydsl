@@ -2,14 +2,13 @@ package eti.query.demonstration.country.control;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import eti.query.demonstration.country.entities.CountryEntity;
-import eti.query.demonstration.country.entities.metamodel.QCountryEntity;
-
-import java.util.List;
+import eti.query.demonstration.country.entities.dslmodel.QCountryEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import java.util.List;
 
 public class CountryStore {
 

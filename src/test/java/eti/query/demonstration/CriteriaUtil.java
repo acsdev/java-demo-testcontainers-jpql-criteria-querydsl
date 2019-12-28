@@ -28,9 +28,9 @@ public class CriteriaUtil {
     public static void configCountryEntity(Metamodel metamodel) {
         EntityType<CountryEntity> entity = metamodel.entity(CountryEntity.class);
 
-        CountryEntity_.countryId = getSingularField(entity, String.class);
-        CountryEntity_.countryName = getSingularField( entity, String.class );
-        CountryEntity_.regionId = getSingularField(entity, Long.class);
+        CountryEntity_.countryId = getSingularField(entity, String.class, "countryId");
+        CountryEntity_.countryName = getSingularField( entity, String.class, "countryName");
+        CountryEntity_.regionId = getSingularField(entity, Long.class, "regionId");
     }
 
     public static void configDepartmentEntity(Metamodel metamodel) {
@@ -51,20 +51,6 @@ public class CriteriaUtil {
         EntityType<EmployeeEntity> entity = metamodel.entity(EmployeeEntity.class);
         EmployeeEntity_.employeeId = getSingularField(entity, Long.class, "employeeId");
         EmployeeEntity_.firstName = getSingularField(entity, String.class, "firstName");
-    }
-
-    private static <E, F> SingularAttribute<E, F> getSingularField(EntityType<E> entityType, Class<F> fieldType) {
-
-        return (SingularAttribute<E, F>) entityType.getDeclaredSingularAttributes()
-                .stream()
-//                .peek( a -> {
-//                    System.out.println( a.getType().getJavaType().getName());
-//                    System.out.println( fieldType.getName() );
-//                })
-                .filter(a -> a.getType().getJavaType().getName().equals( fieldType.getName() ))
-                .findFirst()
-                .get();
-
     }
 
     private static <E, F> SingularAttribute<E, F> getSingularField(EntityType<E> entityType,

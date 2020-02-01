@@ -30,5 +30,8 @@ public class DepartmentStoreTest extends AbstractPersistenceTest {
 
     }
 
-
+    @Test
+    public void queryDSLFindDepartamentWithManagerLocation() {
+        Assert.assertEquals(11, storage.queryDSLFindDepartamentWithManagerLocation().size());
+    }
 }

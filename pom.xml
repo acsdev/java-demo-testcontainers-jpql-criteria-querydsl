@@ -138,14 +138,6 @@
                                     <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                                     <options>
                                         <querydsl.packageSuffix>.dslmodel</querydsl.packageSuffix>
-                                        <querydsl.includedPackages>
-                                            eti.query.demonstration.country.entities,
-                                            eti.query.demonstration.department.entities,
-                                            eti.query.demonstration.employee.entities,
-                                            eti.query.demonstration.job.entities,
-                                            eti.query.demonstration.location.entities,
-                                            eti.query.demonstration.region.entities
-                                        </querydsl.includedPackages>
                                     </options>
                                 </configuration>
                             </execution>

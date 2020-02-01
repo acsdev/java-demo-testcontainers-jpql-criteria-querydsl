@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
+import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
@@ -34,10 +35,9 @@ public class CountryResourceTest {
 
     @Rule
     public GenericContainer oracle = new GenericContainer<>("acsdev00/oracle-18-4-0-xe")
-            .withEnv("ORACLE_BASE","/opt/oracle")
             .withEnv("ORACLE_SID","XE")
             .withEnv("ORACLE_PWD","oracle")
-            .withFileSystemBind("~/Dev/Docker/Volume/oracle-18c-xe","/opt/oracle/oradata", BindMode.READ_WRITE)
+            .withFileSystemBind("~/Dev/Docker/Volume/oracle-18c-xe","/opt/oracle/oradata", BindMode.READ_ONLY)
             .withPrivilegedMode(true)
             .withExposedPorts(1521)
             .withLogConsumer(new Slf4jLogConsumer(LOGGER))
@@ -45,13 +45,9 @@ public class CountryResourceTest {
 
     @Rule
     public GenericContainer payara = new GenericContainer<>("payara/micro:latest")
-            .waitingFor(Wait.forHttp("/demo"))
             .withExposedPorts(8080)
             .withLogConsumer(new Slf4jLogConsumer(LOGGER))
             .withNetwork(network);
-
-    public CountryResourceTest() throws IOException {
-    }
 
     @Before
     public void before() {

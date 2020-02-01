@@ -8,6 +8,7 @@
     <groupId>eti.sca.demo</groupId>
     <artifactId>java-demo-jpql-criteria-querydsl</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -121,7 +122,37 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <build>
+
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven.compiler.plugin.version}</version>
+                        <configuration>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.2.3</version>
+                        <configuration>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                        </configuration>
+                    </plugin>
+
                     <plugin>
                         <groupId>com.mysema.maven</groupId>
                         <artifactId>apt-maven-plugin</artifactId>
@@ -152,6 +183,7 @@
                             </dependency>
                         </dependencies>
                     </plugin>
+
                     <plugin>
                         <groupId>org.bsc.maven</groupId>
                         <artifactId>maven-processor-plugin</artifactId>

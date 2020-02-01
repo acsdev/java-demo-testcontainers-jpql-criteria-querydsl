@@ -71,9 +71,9 @@ public class DepartmentStore {
         return new JPAQueryFactory(this.entityManager)
                 .select(Projections.bean(DepartmentDomain.class, department.departmentName, employee.firstName, location.streetAddress))
                 .from(department)
-                .join(employee)
+                .innerJoin(employee)
                 .on(employee.employeeId.eq(department.managerId))
-                .join(location)
+                .innerJoin(location)
                 .on(location.locationId.eq(department.locationId))
                 .fetch();
     }

@@ -5,8 +5,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>eti.sca.demo</groupId>
-    <artifactId>java-demo-jpql-criteria-querydsl</artifactId>
+    <groupId>eti.sca.demo.jpql.criteria.querydsl</groupId>
+    <artifactId>main-project</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -16,17 +16,25 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.plugin.version>3.6.2</maven.compiler.plugin.version>
 
-        <querydsl.version>4.2.2</querydsl.version>
-
-        <junit.version>4.12</junit.version>
+        <jersey.version>2.30</jersey.version>
 
         <eclipse.persistence>2.6.4</eclipse.persistence>
         <eclipse.persistence.jpa.modelgen.processor.version>2.7.5</eclipse.persistence.jpa.modelgen.processor.version>
+        <querydsl.version>4.2.2</querydsl.version>
+
+        <junit.version>4.12</junit.version>
         <h2database.version>1.4.196</h2database.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet-core</artifactId>
+                <version>${jersey.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-core</artifactId>
@@ -63,6 +71,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>1.12.5</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2database.version}</version>
@@ -79,6 +94,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-core</artifactId>
@@ -103,6 +123,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

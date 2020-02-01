@@ -1,11 +1,14 @@
 
 package eti.query.demonstration.job.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,6 +27,10 @@ public class JobEntity {
 
     @Column(name = "MAX_SALARY")
     private Long maxSalary;
+
+    @OneToMany
+    @JoinColumn(name = "JOB_ID")
+    private List<JobHistoryEntity> jobHistoryEntityList;
 
     public String getJobId() {
         return jobId;
@@ -55,6 +62,14 @@ public class JobEntity {
 
     public void setMaxSalary(Long maxSalary) {
         this.maxSalary = maxSalary;
+    }
+
+    public List<JobHistoryEntity> getJobHistoryEntityList() {
+        return jobHistoryEntityList;
+    }
+
+    public void setJobHistoryEntityList(List<JobHistoryEntity> jobHistoryEntityList) {
+        this.jobHistoryEntityList = jobHistoryEntityList;
     }
 
     @Override

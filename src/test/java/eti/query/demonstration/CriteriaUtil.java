@@ -6,11 +6,22 @@ import eti.query.demonstration.department.entities.DepartmentEntity;
 import eti.query.demonstration.department.entities.metamodel.DepartmentEntity_;
 import eti.query.demonstration.employee.entities.EmployeeEntity;
 import eti.query.demonstration.employee.entities.metamodel.EmployeeEntity_;
+import eti.query.demonstration.job.entities.JobEntity;
+import eti.query.demonstration.job.entities.JobHistoryEntity;
+import eti.query.demonstration.job.entities.JobHistoryEntityPK;
+import eti.query.demonstration.job.entities.metamodel.JobEntity_;
+import eti.query.demonstration.job.entities.metamodel.JobHistoryEntityPK_;
+import eti.query.demonstration.job.entities.metamodel.JobHistoryEntity_;
 import eti.query.demonstration.location.entities.LocationEntity;
 import eti.query.demonstration.location.entities.metamodel.LocationEntity_;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EmbeddableType;
 import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.ListAttribute;
+import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -23,6 +34,7 @@ public class CriteriaUtil {
         configDepartmentEntity( metamodel );
         configLocationEntity( metamodel );
         configEmployeeEntity( metamodel );
+        configJobEntity( metamodel );
     }
 
     public static void configCountryEntity(Metamodel metamodel) {
@@ -53,16 +65,41 @@ public class CriteriaUtil {
         EmployeeEntity_.firstName = getSingularField(entity, String.class, "firstName");
     }
 
-    private static <E, F> SingularAttribute<E, F> getSingularField(EntityType<E> entityType,
-                                                                   Class<F> fieldType,
-                                                                   String fieldName) {
+    public static void configJobEntity(Metamodel metamodel) {
+        EntityType<JobEntity> entity = metamodel.entity(JobEntity.class);
+        EntityType<JobHistoryEntity> entityHistory = metamodel.entity(JobHistoryEntity.class);
+        EmbeddableType<JobHistoryEntityPK> entityHistoryPK = metamodel.embeddable(JobHistoryEntityPK.class);
 
-        return (SingularAttribute<E, F>) entityType.getDeclaredSingularAttributes()
-                .stream()
-                .filter(a -> a.getName().equals(fieldName))
-                .findAny()
-                .get();
+        JobEntity_.jobId = getSingularField(entity, String.class, "jobId");
+        JobEntity_.jobTitle = getSingularField(entity, String.class, "jobTitle");
+        JobEntity_.minSalary = getSingularField(entity, Long.class, "minSalary");
+        JobEntity_.maxSalary = getSingularField(entity, Long.class, "maxSalary");
+
+        JobEntity_.jobHistoryEntityList = getListField(entity, JobHistoryEntity.class, "jobHistoryEntityList");
+
+        JobHistoryEntity_.pk = getSingularField(entityHistory, JobHistoryEntityPK.class, "pk");
+        JobHistoryEntity_.jobId= getSingularField(entityHistory, String.class, "jobId");
+        JobHistoryEntity_.departmentId = getSingularField(entityHistory, Long.class, "departmentId");
+        JobHistoryEntity_.endDate = getSingularField(entityHistory, LocalDateTime.class, "endDate");
+
+        JobHistoryEntityPK_.employeeId = getSingularField(entityHistoryPK, Long.class, "employeeId");
+        JobHistoryEntityPK_.startDate = getSingularField(entityHistoryPK, LocalDateTime.class, "startDate");
 
     }
+
+    private static <E, F> SingularAttribute<E, F> getSingularField(ManagedType<E> entityType,
+                                                                   Class<F> fieldType,
+                                                                   String fieldName) {
+        //noinspection unchecked
+        return (SingularAttribute<E, F>) entityType.getDeclaredSingularAttribute(fieldName);
+    }
+
+    private static <E, F> ListAttribute<E, F> getListField(ManagedType<E> entityType,
+                                                                   Class<F> fieldType,
+                                                                   String fieldName) {
+        //noinspection unchecked
+        return (ListAttribute<E, F>) entityType.getDeclaredList(fieldName);
+    }
+
 
 }

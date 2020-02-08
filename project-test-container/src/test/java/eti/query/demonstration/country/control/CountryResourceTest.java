@@ -1,6 +1,7 @@
 package eti.query.demonstration.country.control;
 
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -19,16 +20,28 @@ import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 import org.testcontainers.containers.wait.strategy.WaitStrategy;
 import org.testcontainers.utility.MountableFile;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Array;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAmount;
 import java.time.temporal.TemporalUnit;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * For this classes works it necessary to have the docker images in your local registry
@@ -82,37 +95,16 @@ public class CountryResourceTest {
         dataSource.setUser("system");
         dataSource.setPassword("oracle");
         dataSource.setDriverType("ojdbc7");
-        dataSource.getConnection();
-        System.out.println(dataSource.getDatabaseName());
-        System.out.println(dataSource.getServiceName());
-        System.out.println(dataSource.getParentLogger());
 
+        ScriptRunner runner = new ScriptRunner(dataSource.getConnection());
 
-        // docker exec -it oracle-18c-xe sqlplus system/oracle@XE @/home/oracle/test.sql
-        // inside docker run script file
-        //
-        // select sysdate from dual;
-        // quit;
-        // /.
-//        String containerIpAddress = payara.getContainerIpAddress();
-//        Integer firstMappedPort = payara.getFirstMappedPort();
-//        System.out.println(containerIpAddress + ":" +firstMappedPort);
-//
-//        oracle.copyFileToContainer(MountableFile.forClasspathResource("sql/create.sql"), "/home/oracle/create.sql");
-//        oracle.copyFileToContainer(MountableFile.forClasspathResource("sql/load.sql"), "/home/oracle/load.sql");
-//        String containerIpAddress1 = oracle.getContainerIpAddress();
-//
-//        String url = "system/oracle@".concat(containerIpAddress1).concat(":1521/XE");
-//
-//        Container.ExecResult execResult = oracle.execInContainer("sqlplus", url, "@/home/oracle/create.sql");
-//        System.out.println(execResult.getExitCode());
-//        System.out.println(execResult.getStdout());
-//        System.err.println(execResult.getStderr());
-//
-//        Container.ExecResult execResult1 = oracle.execInContainer("sqlplus", url, "@/home/oracle/load.sql");
-//        System.out.println(execResult1.getExitCode());
-//        System.out.println(execResult1.getStdout());
-//        System.err.println(execResult1.getStderr());
+        FileReader create = new FileReader
+                (Thread.currentThread().getContextClassLoader().getResource("sql/create.sql").getFile());
+        runner.runScript(create);
+
+        FileReader load = new FileReader
+                (Thread.currentThread().getContextClassLoader().getResource("sql/load.sql").getFile());
+        runner.runScript(load);
     }
 
     @Test

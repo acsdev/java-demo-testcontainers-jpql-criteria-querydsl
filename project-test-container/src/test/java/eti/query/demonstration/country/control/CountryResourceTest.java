@@ -2,8 +2,6 @@ package eti.query.demonstration.country.control;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.testcontainers.containers.output.OutputFrame;
-import org.testcontainers.containers.output.ToStringConsumer;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

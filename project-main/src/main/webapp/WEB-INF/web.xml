@@ -7,7 +7,7 @@
     <data-source>
         <name>java:global/datasource</name>
         <class-name>oracle.jdbc.pool.OracleDataSource</class-name>
-        <url>jdbc:oracle:thin:hr/hr@localhost:1521:XE</url>
+        <url>jdbc:oracle:thin:hr/hr@oracledatabase:1521:XE</url>
     </data-source>
 
 </web-app>

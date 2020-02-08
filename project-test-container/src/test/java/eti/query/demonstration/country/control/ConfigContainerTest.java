@@ -41,7 +41,7 @@ public abstract class ConfigContainerTest {
     }
 
     @ClassRule
-    public static Network network = Network.newNetwork();
+    public static Network network = Network.SHARED;
 
     private static GenericContainer oracle;
 
@@ -56,22 +56,21 @@ public abstract class ConfigContainerTest {
                 .withFileSystemBind(getOracleVolume(), "/opt/oracle/oradata", BindMode.READ_WRITE)
                 .withPrivilegedMode(true)
                 .withNetworkAliases("oracledatabase")
-//            .withLogConsumer(new Slf4jLogConsumer(LOGGER))
+                .withLogConsumer(new Slf4jLogConsumer(LOGGER))
                 .withNetwork(network)
                 .waitingFor(
                         Wait.forLogMessage(".*DATABASE IS READY TO USE!.*", 1)
                 );
+        oracle.start();
 
         payara = new GenericContainer<>("payara/micro:latest")
                 .withLogConsumer(new Slf4jLogConsumer(LOGGER))
+                .withNetworkAliases("payara")
                 .withNetwork(network)
                 .withFileSystemBind(getPayaraDeployDir(), "/opt/payara/deployments", BindMode.READ_WRITE)
                 .waitingFor(Wait.forListeningPort());
-
-        oracle.start();
         payara.start();
 
-        String response = payara.execInContainer("wget", "-O", "-", "http://oracle:8080").getStdout();
 
         String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE",
                 oracle.getContainerIpAddress(),

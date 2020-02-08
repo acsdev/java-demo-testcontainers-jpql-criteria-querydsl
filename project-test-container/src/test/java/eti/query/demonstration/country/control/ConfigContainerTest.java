@@ -72,9 +72,9 @@ public abstract class ConfigContainerTest {
         payara.start();
 
 
-        String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE",
-                oracle.getContainerIpAddress(),
-                oracle.getFirstMappedPort());
+//        String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE",
+//                oracle.getContainerIpAddress(),
+//                oracle.getFirstMappedPort());
 
 //        OracleDataSource dataSource = new OracleDataSource();
 //        dataSource.setURL(url);

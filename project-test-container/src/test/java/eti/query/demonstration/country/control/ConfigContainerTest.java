@@ -40,36 +40,37 @@ public abstract class ConfigContainerTest {
         return System.getProperty("user.dir").concat("/payara/deployments");
     }
 
-    @ClassRule
-    public static Network network = Network.SHARED;
+    private static GenericContainer oracleGC;
 
-    private static GenericContainer oracle;
-
-    private static GenericContainer payara;
+    private static GenericContainer payaraGC;
 
     @BeforeClass
     public static void before() throws Exception {
 
-        oracle = new GenericContainer<>("acsdev00/oracle-18-4-0-xe")
+        Network network = Network.newNetwork();
+
+        oracleGC = new GenericContainer<>("acsdev00/oracle-18-4-0-xe")
                 .withEnv("ORACLE_SID", "XE")
                 .withEnv("ORACLE_PWD", "oracle")
                 .withFileSystemBind(getOracleVolume(), "/opt/oracle/oradata", BindMode.READ_WRITE)
                 .withPrivilegedMode(true)
+                .withExposedPorts(1521)
+                .withNetwork(network)
                 .withNetworkAliases("oracledatabase")
                 .withLogConsumer(new Slf4jLogConsumer(LOGGER))
-                .withNetwork(network)
                 .waitingFor(
                         Wait.forLogMessage(".*DATABASE IS READY TO USE!.*", 1)
                 );
-        oracle.start();
+        oracleGC.start();
 
-        payara = new GenericContainer<>("payara/micro:latest")
-                .withLogConsumer(new Slf4jLogConsumer(LOGGER))
-                .withNetworkAliases("payara")
-                .withNetwork(network)
+        payaraGC = new GenericContainer<>("payara/micro:latest")
                 .withFileSystemBind(getPayaraDeployDir(), "/opt/payara/deployments", BindMode.READ_WRITE)
+                .withExposedPorts(8080)
+                .withNetwork(network)
+                .withNetworkAliases("payara")
+                .withLogConsumer(new Slf4jLogConsumer(LOGGER))
                 .waitingFor(Wait.forListeningPort());
-        payara.start();
+        payaraGC.start();
 
 
 //        String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE",
@@ -92,14 +93,15 @@ public abstract class ConfigContainerTest {
 //                (Thread.currentThread().getContextClassLoader().getResource("sql/load.sql").getFile());
 //        runner.runScript(load);
 
-        payara.followOutput(new ToStringConsumer(), OutputFrame.OutputType.STDOUT);
+        payaraGC.followOutput(new ToStringConsumer(), OutputFrame.OutputType.STDOUT);
     }
 
     @After
     public void after() {
-        payara.followOutput(new ToStringConsumer(), OutputFrame.OutputType.STDOUT);
+        payaraGC.followOutput(new ToStringConsumer(), OutputFrame.OutputType.STDOUT);
     }
+
     protected String getAppServerURLBase() {
-        return String.format("http://%s:%s", payara.getContainerIpAddress(), payara.getFirstMappedPort());
+        return String.format("http://%s:%s", payaraGC.getContainerIpAddress(), payaraGC.getFirstMappedPort());
     }
 }

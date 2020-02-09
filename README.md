@@ -1,6 +1,6 @@
 # java-demo-testcontainers-jpql-criteria-querydsl
 
-This demo has 2 gols.
+This demo has 2 goals.
 
 First, comparing JPQL, Criteria and QueryDSL showing by code their differences.
 

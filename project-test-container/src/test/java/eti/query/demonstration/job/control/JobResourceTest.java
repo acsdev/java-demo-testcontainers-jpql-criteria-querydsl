@@ -1,7 +1,6 @@
-package eti.query.demonstration.country.control;
+package eti.query.demonstration.job.control;
 
 import eti.query.demonstration.ConfigContainerTest;
-import eti.query.demonstration.util.Util;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,38 +9,47 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class CountryResourceTest extends ConfigContainerTest {
+public class JobResourceTest extends ConfigContainerTest {
 
     @Test
-    public void testGetCountryJPQL() {
+    public void testFindHistoryJobByJobIdJPQL() {
+
         Client client = ClientBuilder.newClient();
 
-        String url = getAppServerURLBase().concat("/demo/country/jpql");
+        String url = getAppServerURLBase().concat("/demo/job/jpql/AC_MGR");
+
         Response response = client.target(url).request(MediaType.APPLICATION_JSON).get();
 
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        System.out.println( Util.getJson(response) );
+        System.out.println(response.getEntity());
+
     }
 
     @Test
-    public void testGetCountryCriteria() {
+    public void testFindHistoryJobByJobIdCriteria() {
+
         Client client = ClientBuilder.newClient();
 
-        String url = getAppServerURLBase().concat("/demo/country/criteria");
+        String url = getAppServerURLBase().concat("/demo/job/criteria/AC_MGR");
+
         Response response = client.target(url).request(MediaType.APPLICATION_JSON).get();
 
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        System.out.println( Util.getJson(response) );
+        System.out.println(response.getEntity());
+
     }
 
     @Test
-    public void testGetCountryQueryDSL() {
+    public void testFindHistoryJobByJobIdQueryDSL() {
+
         Client client = ClientBuilder.newClient();
 
-        String url = getAppServerURLBase().concat("/demo/country/dsl");
+        String url = getAppServerURLBase().concat("/demo/job/dsl/AC_MGR");
+
         Response response = client.target(url).request(MediaType.APPLICATION_JSON).get();
 
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        System.out.println( Util.getJson(response) );
+        System.out.println(response.getEntity());
+
     }
 }

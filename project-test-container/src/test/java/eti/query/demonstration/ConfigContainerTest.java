@@ -1,4 +1,4 @@
-package eti.query.demonstration.country.control;
+package eti.query.demonstration;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;

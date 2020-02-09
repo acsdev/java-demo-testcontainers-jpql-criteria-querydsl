@@ -6,6 +6,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,5 +124,12 @@ public abstract class ConfigContainerTest {
                 .waitingFor(Wait.forHttp("/demo/application.wadl"));
 
         payaraGC.start();
+    }
+
+    @AfterClass
+    public static void after() throws Exception {
+        payaraGC.stop();
+
+        oracleGC.stop();
     }
 }

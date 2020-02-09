@@ -12,8 +12,20 @@ public class CountryResource {
     private CountryStore store;
 
     @GET
-    public Response getCountry() {
+    @Path("/jpql")
+    public Response getCountryJPQL() {
         return Response.ok(store.jpqlFindAll()).build();
     }
 
+    @GET
+    @Path("/criteria")
+    public Response getCountryCriteria() {
+        return Response.ok(store.criteriaFindAll()).build();
+    }
+
+    @GET
+    @Path("/dsl")
+    public Response getCountryDSL() {
+        return Response.ok(store.queryDSLFindAll()).build();
+    }
 }

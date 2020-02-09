@@ -1,7 +1,5 @@
 package eti.query.demonstration.job.control;
 
-import eti.query.demonstration.department.control.DepartmentStore;
-
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;

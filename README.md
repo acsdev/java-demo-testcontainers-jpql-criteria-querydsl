@@ -11,19 +11,22 @@ Second, show how to use testcontainers library in a pratical way.
 - project-main
   - Uses JPQL, Criteria and QueryDSL
   - Build a web application (**project-main.war**)
-  - The web application exposes **http resources** where each one of them calls a method that uses JPQL Criteria or QueryDSL to retrive data from oracle database.
+  - The web application exposes **http resources** where each one of them calls a method that uses JPQL or Criteria or QueryDSL to retrive data from oracle database.
 - project-test-container
   - Uses jax-rs as a http client to call the resources expose by **project-main**
   - Uses **apache-ibatis** to run script that creates database and load their tables
-  - Runs has two containers:
-    1. Oracle container that will be use as source of date
+  - Runs two containers:
+    1. Oracle container that will be use as source of data
     2. Payara container that will run a web app which expose the http resouces that all retrive data from oracle container.
- 
+
+# Running
+
+After build 
+
   
-## Recomendation
+# Recomendation
   
 First time that oracle container runs takes to long because it actually install the database. To avoid that this process runs everytime, run the first time manually, following the steps bellow.
-
 
 #### create a dir to keep oracle database files
 mkdir -p <ADDRESS_IN_HOST_MACHINE_TO_KEEP_ORACLEP_FILES>

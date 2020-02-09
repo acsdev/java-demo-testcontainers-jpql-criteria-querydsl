@@ -1,6 +1,5 @@
 package eti.query.demonstration.util;
 
-import eti.query.demonstration.ConfigContainerTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

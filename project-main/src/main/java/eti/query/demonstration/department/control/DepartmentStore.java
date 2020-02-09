@@ -4,7 +4,6 @@ package eti.query.demonstration.department.control;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import eti.query.demonstration.country.entities.CountryEntity;
 import eti.query.demonstration.department.entities.DepartmentDomain;
 import eti.query.demonstration.department.entities.DepartmentEntity;
 import eti.query.demonstration.department.entities.dslmodel.QDepartmentEntity;
@@ -18,14 +17,13 @@ import eti.query.demonstration.location.entities.metamodel.LocationEntity_;
 import eti.query.demonstration.util.DataDomain;
 import org.eclipse.persistence.jpa.JpaQuery;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class DepartmentStore {
 

@@ -2,16 +2,12 @@ package eti.query.demonstration.job.entities;
 
 import eti.query.demonstration.converters.LocalDateTimeAttributeConverter;
 
-import java.io.Serializable;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Embeddable
 public class JobHistoryEntityPK implements Serializable {

@@ -2,10 +2,9 @@ package eti.query.demonstration;
 
 import eti.query.demonstration.country.control.CountryResource;
 
-import java.util.Set;
-
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import java.util.Set;
 
 
 @ApplicationPath("/demo")

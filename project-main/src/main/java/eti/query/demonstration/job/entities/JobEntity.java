@@ -1,15 +1,9 @@
 
 package eti.query.demonstration.job.entities;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "JOBS", schema = "HR")

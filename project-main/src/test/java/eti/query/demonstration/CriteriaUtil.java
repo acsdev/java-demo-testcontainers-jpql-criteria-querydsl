@@ -15,15 +15,9 @@ import eti.query.demonstration.job.entities.metamodel.JobHistoryEntity_;
 import eti.query.demonstration.location.entities.LocationEntity;
 import eti.query.demonstration.location.entities.metamodel.LocationEntity_;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.EntityManager;
-import javax.persistence.metamodel.EmbeddableType;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.ListAttribute;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.*;
+import java.time.LocalDateTime;
 
 public class CriteriaUtil {
 

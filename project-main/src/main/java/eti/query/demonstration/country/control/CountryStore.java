@@ -9,11 +9,9 @@ import org.eclipse.persistence.jpa.JpaQuery;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class CountryStore {

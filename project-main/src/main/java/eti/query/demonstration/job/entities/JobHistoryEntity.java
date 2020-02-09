@@ -3,14 +3,9 @@ package eti.query.demonstration.job.entities;
 
 import eti.query.demonstration.converters.LocalDateTimeAttributeConverter;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "JOB_HISTORY", schema = "HR")

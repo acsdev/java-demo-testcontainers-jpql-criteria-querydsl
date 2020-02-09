@@ -1,25 +1,23 @@
 package eti.query.demonstration.country.control;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.ConsoleAppender;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
-import org.junit.*;
+import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
-import org.testcontainers.containers.output.OutputFrame;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
-import org.testcontainers.containers.output.ToStringConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.utility.MountableFile;
 
-import javax.ws.rs.core.UriBuilder;
 import java.io.FileReader;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.Optional;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * For this classes works it necessary to have the docker images in your local registry
@@ -29,7 +27,35 @@ import java.util.Optional;
  */
 public abstract class ConfigContainerTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigContainerTest.class);
+    private static final Logger LOGGER = ConfigContainerTest.createLogger();
+
+    private static GenericContainer oracleGC;
+
+    private static GenericContainer payaraGC;
+
+    /**
+     * Create custom logger at Runtime
+     * @return
+     */
+    private static Logger createLogger() {
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        PatternLayoutEncoder ple = new PatternLayoutEncoder();
+        ple.setPattern("%msg%n");
+        ple.setContext(lc);
+        ple.start();
+
+        ConsoleAppender<ILoggingEvent> consoleAppender = new ConsoleAppender<>();
+        consoleAppender.setEncoder(ple);
+        consoleAppender.setContext(lc);
+        consoleAppender.start();
+
+        ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger)
+                LoggerFactory.getLogger(ConfigContainerTest.class);
+
+        logger.addAppender(consoleAppender);
+        logger.setAdditive(false);
+        return logger;
+    }
 
     private static String getOracleVolume() {
         //TODO, GET FROM ENVIROMENT
@@ -37,12 +63,35 @@ public abstract class ConfigContainerTest {
     }
 
     private static String getPayaraDeployDir() {
+
         return System.getProperty("user.dir").concat("/payara/deployments");
     }
 
-    private static GenericContainer oracleGC;
+    private static void prepareOracleTable() throws IOException, SQLException {
+        String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE",
+                oracleGC.getContainerIpAddress(),
+                oracleGC.getFirstMappedPort());
 
-    private static GenericContainer payaraGC;
+        OracleDataSource dataSource = new OracleDataSource();
+        dataSource.setURL(url);
+        dataSource.setUser("system");
+        dataSource.setPassword("oracle");
+        dataSource.setDriverType("ojdbc7");
+
+        ScriptRunner runner = new ScriptRunner(dataSource.getConnection());
+
+        FileReader create = new FileReader
+                (Thread.currentThread().getContextClassLoader().getResource("sql/create.sql").getFile());
+        runner.runScript(create);
+
+        FileReader load = new FileReader
+                (Thread.currentThread().getContextClassLoader().getResource("sql/load.sql").getFile());
+        runner.runScript(load);
+    }
+
+    protected String getAppServerURLBase() {
+        return String.format("http://%s:%s", payaraGC.getContainerIpAddress(), payaraGC.getFirstMappedPort());
+    }
 
     @BeforeClass
     public static void before() throws Exception {
@@ -63,45 +112,16 @@ public abstract class ConfigContainerTest {
                 );
         oracleGC.start();
 
+        prepareOracleTable();
+
         payaraGC = new GenericContainer<>("payara/micro:latest")
                 .withFileSystemBind(getPayaraDeployDir(), "/opt/payara/deployments", BindMode.READ_WRITE)
                 .withExposedPorts(8080)
                 .withNetwork(network)
                 .withNetworkAliases("payara")
                 .withLogConsumer(new Slf4jLogConsumer(LOGGER))
-                .waitingFor(Wait.forListeningPort());
+                .waitingFor(Wait.forHttp("/demo/application.wadl"));
+
         payaraGC.start();
-
-
-//        String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE",
-//                oracle.getContainerIpAddress(),
-//                oracle.getFirstMappedPort());
-
-//        OracleDataSource dataSource = new OracleDataSource();
-//        dataSource.setURL(url);
-//        dataSource.setUser("system");
-//        dataSource.setPassword("oracle");
-//        dataSource.setDriverType("ojdbc7");
-//
-//        ScriptRunner runner = new ScriptRunner(dataSource.getConnection());
-//
-//        FileReader create = new FileReader
-//                (Thread.currentThread().getContextClassLoader().getResource("sql/create.sql").getFile());
-//        runner.runScript(create);
-//
-//        FileReader load = new FileReader
-//                (Thread.currentThread().getContextClassLoader().getResource("sql/load.sql").getFile());
-//        runner.runScript(load);
-
-        payaraGC.followOutput(new ToStringConsumer(), OutputFrame.OutputType.STDOUT);
-    }
-
-    @After
-    public void after() {
-        payaraGC.followOutput(new ToStringConsumer(), OutputFrame.OutputType.STDOUT);
-    }
-
-    protected String getAppServerURLBase() {
-        return String.format("http://%s:%s", payaraGC.getContainerIpAddress(), payaraGC.getFirstMappedPort());
     }
 }

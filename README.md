@@ -21,7 +21,7 @@ Second, show how to use testcontainers library in a pratical way.
 
 # Running
 
-After build 
+After build "**mvn clean compile package**" in **project-main** folder, a war named as project-main.war should be found in *project-test-container*/payara/deployments. That war file will be deployed in payara once the application server starts.
 
   
 # Recomendation

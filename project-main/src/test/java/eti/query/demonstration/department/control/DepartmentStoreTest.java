@@ -1,12 +1,15 @@
 package eti.query.demonstration.department.control;
 
 import eti.query.demonstration.AbstractPersistenceTest;
+import eti.query.demonstration.department.entities.DepartmentDomain;
+import eti.query.demonstration.util.DataDomain;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @RunWith(JUnit4.class)
 public class DepartmentStoreTest extends AbstractPersistenceTest {
@@ -21,17 +24,20 @@ public class DepartmentStoreTest extends AbstractPersistenceTest {
 
     @Test
     public void testJpqlFindDepartamentWithManagerLocation() {
-        Assert.assertEquals(11, storage.jpqlFindDepartamentWithManagerLocation().size());
+        DataDomain<List<DepartmentDomain>> dataDomain = storage.jpqlFindDepartamentWithManagerLocation();
+        Assert.assertEquals(11, dataDomain.getData().size());
     }
 
     @Test
     public void criteriaFindDepartamentWithManagerLocation() {
-        Assert.assertEquals(11, storage.criteriaFindDepartamentWithManagerLocation().size());
+        DataDomain<List<DepartmentDomain>> dataDomain = storage.criteriaFindDepartamentWithManagerLocation();
+        Assert.assertEquals(11,  dataDomain.getData().size());
 
     }
 
     @Test
     public void queryDSLFindDepartamentWithManagerLocation() {
-        Assert.assertEquals(11, storage.queryDSLFindDepartamentWithManagerLocation().size());
+        DataDomain<List<DepartmentDomain>> dataDomain = storage.queryDSLFindDepartamentWithManagerLocation();
+        Assert.assertEquals(11,dataDomain.getData().size());
     }
 }

@@ -1,13 +1,19 @@
 package eti.query.demonstration.country.control;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import eti.query.demonstration.country.entities.CountryEntity;
 import eti.query.demonstration.country.entities.dslmodel.QCountryEntity;
+import eti.query.demonstration.util.DataDomain;
+import org.eclipse.persistence.jpa.JpaQuery;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public class CountryStore {
@@ -19,17 +25,35 @@ public class CountryStore {
         this.entityManager = entityManager;
     }
 
-    public List<CountryEntity> jpqlFindAll() {
-        return entityManager.createQuery("SELECT o FROM CountryEntity o", CountryEntity.class).getResultList();
+    public DataDomain<List<CountryEntity>> jpqlFindAll() {
+        TypedQuery<CountryEntity> query =
+                entityManager.createQuery("SELECT o FROM CountryEntity o", CountryEntity.class);
+
+        List<CountryEntity> data = query.getResultList();
+        String sql = query.unwrap(JpaQuery.class).getDatabaseQuery().getSQLString();
+
+        return new DataDomain<>(data, sql);
     }
 
-    public List<CountryEntity> criteriaFindAll() {
+    public DataDomain<List<CountryEntity>> criteriaFindAll() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<CountryEntity> criteria = builder.createQuery(CountryEntity.class);
-        return entityManager.createQuery( criteria ).getResultList();
+        TypedQuery<CountryEntity> query = entityManager.createQuery(criteria);
+
+        List<CountryEntity> data = query.getResultList();
+        String sql = query.unwrap(JpaQuery.class).getDatabaseQuery().getSQLString();
+
+        return new DataDomain<>(data, sql);
     }
 
-    public List<CountryEntity> queryDSLFindAll() {
-        return new JPAQueryFactory(this.entityManager).selectFrom(QCountryEntity.countryEntity).fetch();
+    public  DataDomain<List<CountryEntity>> queryDSLFindAll() {
+
+        JPAQuery<CountryEntity> query =
+                new JPAQueryFactory(this.entityManager).selectFrom(QCountryEntity.countryEntity);
+
+        List<CountryEntity> data = query.fetch();
+        String sql = query.createQuery().unwrap(JpaQuery.class).getDatabaseQuery().getSQLString();
+
+        return new DataDomain<>(data, sql);
     }
 }

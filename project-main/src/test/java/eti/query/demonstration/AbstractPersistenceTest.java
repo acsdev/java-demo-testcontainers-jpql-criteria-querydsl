@@ -3,12 +3,11 @@ package eti.query.demonstration;
 import org.junit.After;
 import org.junit.Before;
 
-import java.util.TimeZone;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.TimeZone;
 
 /**
  * Provides an entityManger for testing purposes

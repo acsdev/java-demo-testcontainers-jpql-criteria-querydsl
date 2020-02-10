@@ -21,6 +21,7 @@ Second, show how to use testcontainers library in a pratical way.
     2. Payara container that will run a web app which expose the http resouces that all retrive data from oracle container.
 
 # Running
+Chance the method **getOracleVolume** in **eti.query.demonstration.ConfigContainerTest** to point for a docker volume configured to be the volume of your oracle container.  
 
 After build "**mvn clean compile package**" in **project-main** folder, a war named as project-main.war should be found in *project-test-container*/payara/deployments. That war file will be deployed in payara once the application server starts.
 

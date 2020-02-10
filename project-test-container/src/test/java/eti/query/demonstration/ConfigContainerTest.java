@@ -19,6 +19,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * For this classes works it necessary to have the docker images in your local registry
@@ -36,6 +37,7 @@ public abstract class ConfigContainerTest {
 
     /**
      * Create custom logger at Runtime
+     *
      * @return
      */
     private static Logger createLogger() {
@@ -50,8 +52,8 @@ public abstract class ConfigContainerTest {
         consoleAppender.setContext(lc);
         consoleAppender.start();
 
-        ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger)
-                LoggerFactory.getLogger(ConfigContainerTest.class);
+        ch.qos.logback.classic.Logger logger =
+                (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ConfigContainerTest.class);
 
         logger.addAppender(consoleAppender);
         logger.setAdditive(false);
@@ -60,7 +62,9 @@ public abstract class ConfigContainerTest {
 
     private static String getOracleVolume() {
         //TODO, GET FROM ENVIROMENT
-        return "/home/allansantos/Dev/Docker/Volume/oracle-18c-xe";
+        String volumeForOracleContainer = null;
+        return Optional.ofNullable(volumeForOracleContainer)
+                .orElseThrow(() -> new RuntimeException("Directory to use as volume for oracle container not found"));
     }
 
     private static String getPayaraDeployDir() {
@@ -69,8 +73,7 @@ public abstract class ConfigContainerTest {
     }
 
     private static void prepareOracleTable() throws IOException, SQLException {
-        String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE",
-                oracleGC.getContainerIpAddress(),
+        String url = String.format("jdbc:oracle:thin:system/oracle@%s:%s:XE", oracleGC.getContainerIpAddress(),
                 oracleGC.getFirstMappedPort());
 
         OracleDataSource dataSource = new OracleDataSource();
@@ -81,12 +84,12 @@ public abstract class ConfigContainerTest {
 
         ScriptRunner runner = new ScriptRunner(dataSource.getConnection());
 
-        FileReader create = new FileReader
-                (Thread.currentThread().getContextClassLoader().getResource("sql/create.sql").getFile());
+        FileReader create =
+                new FileReader(Thread.currentThread().getContextClassLoader().getResource("sql/create.sql").getFile());
         runner.runScript(create);
 
-        FileReader load = new FileReader
-                (Thread.currentThread().getContextClassLoader().getResource("sql/load.sql").getFile());
+        FileReader load =
+                new FileReader(Thread.currentThread().getContextClassLoader().getResource("sql/load.sql").getFile());
         runner.runScript(load);
     }
 
@@ -99,8 +102,7 @@ public abstract class ConfigContainerTest {
 
         Network network = Network.newNetwork();
 
-        oracleGC = new GenericContainer<>("acsdev00/oracle-18-4-0-xe")
-                .withEnv("ORACLE_SID", "XE")
+        oracleGC = new GenericContainer<>("acsdev00/oracle-18-4-0-xe").withEnv("ORACLE_SID", "XE")
                 .withEnv("ORACLE_PWD", "oracle")
                 .withFileSystemBind(getOracleVolume(), "/opt/oracle/oradata", BindMode.READ_WRITE)
                 .withPrivilegedMode(true)
@@ -108,15 +110,13 @@ public abstract class ConfigContainerTest {
                 .withNetwork(network)
                 .withNetworkAliases("oracledatabase")
                 .withLogConsumer(new Slf4jLogConsumer(LOGGER))
-                .waitingFor(
-                        Wait.forLogMessage(".*DATABASE IS READY TO USE!.*", 1)
-                );
+                .waitingFor(Wait.forLogMessage(".*DATABASE IS READY TO USE!.*", 1));
         oracleGC.start();
 
         prepareOracleTable();
 
-        payaraGC = new GenericContainer<>("payara/micro:latest")
-                .withFileSystemBind(getPayaraDeployDir(), "/opt/payara/deployments", BindMode.READ_WRITE)
+        payaraGC = new GenericContainer<>("payara/micro:latest").withFileSystemBind(getPayaraDeployDir(),
+                "/opt/payara/deployments", BindMode.READ_WRITE)
                 .withExposedPorts(8080)
                 .withNetwork(network)
                 .withNetworkAliases("payara")
